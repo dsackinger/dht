@@ -5,6 +5,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

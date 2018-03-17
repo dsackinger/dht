@@ -147,7 +147,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Logger.cpp" />
     <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\TcpConnection.cpp" />
+    <ClCompile Include="..\TcpListener.cpp" />
+    <ClCompile Include="..\ThreadPool.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE" />
+    <None Include="..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\IConnectionListener.h" />
+    <ClInclude Include="..\Logger.h" />
+    <ClInclude Include="..\TcpConnection.h" />
+    <ClInclude Include="..\TcpListener.h" />
+    <ClInclude Include="..\ThreadPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
