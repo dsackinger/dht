@@ -28,13 +28,35 @@ TcpListener::TcpListener(
   acceptor_.open(endpoint.protocol());
   acceptor_.bind(endpoint);
   acceptor_.listen();
+}
 
-  start_accept();
+TcpListener::TcpListener(
+  asio::io_service& io_service,
+  asio::ip::tcp::endpoint endpoint,
+  std::shared_ptr<IConnectionListener> listener,
+  Logger& log)
+  : io_service_(io_service)
+  , acceptor_(io_service_)
+  , socket_(io_service)
+  , weak_listener_(listener)
+  , log_(log)
+{
+  log_.log("Listening on ", endpoint);
+
+  acceptor_.open(endpoint.protocol());
+  acceptor_.bind(endpoint);
+  acceptor_.listen();
 }
 
 TcpListener::~TcpListener()
 {
   acceptor_.close();
+}
+
+void TcpListener::start()
+{
+  // Must be called outside of the constructor so the shared this is established.
+  start_accept();
 }
 
 void TcpListener::start_accept()
@@ -53,7 +75,7 @@ void TcpListener::start_accept()
       if (!listener)
         return;
 
-      auto connection = std::make_shared<TcpConnection>(std::move(socket_));
+      auto connection = std::make_shared<TcpConnection>(io_service_, std::move(socket_), log_);
       listener->incoming_tcp_connection(connection);
     }
 

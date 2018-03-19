@@ -13,27 +13,64 @@
 #if !defined(__TCP_CONNECTION_H__)
 #define __TCP_CONNECTION_H__
 
+#include "IMessageListener.h"
+#include "Logger.h"
+
 #include <asio.hpp>
 
+#include <cstdint>
+#include <deque>
 #include <memory>
 
 class TcpConnection
   : public std::enable_shared_from_this<TcpConnection>
 {
 public:
-  TcpConnection(asio::ip::tcp::socket socket);
+  TcpConnection(
+    asio::io_service& io_service,
+    asio::ip::tcp::socket socket,
+    Logger& log);
+
   TcpConnection(
     asio::io_service& io_service,
     const std::string& address,
-    const std::string& port);
+    const std::string& port,
+    Logger& log);
+
   virtual ~TcpConnection();
 
 public:
+  inline void set_listener(std::shared_ptr<IMessageListener> listener) { listener_ = listener; };
   void start();
+  void close();
+
+  // Normally, I would pick a way to hide asio
+  asio::ip::basic_endpoint<asio::ip::tcp> get_remote_endpoint() { return socket_.remote_endpoint(); };
+
+  void write(const std::string& message);
 
 private:
+  void start_read();
+  void start_write();
+
+  void handle_disconnect();
+
+private:
+  std::string address_;
+  std::string port_;
+
+  asio::io_service& io_service_;
   asio::ip::tcp::socket socket_;
-  std::array<char, 8192> buffer_;
+  asio::detail::u_short_type read_length_;
+  asio::detail::u_short_type write_length_;
+  std::vector<char> buffer_;
+
+  std::weak_ptr<IMessageListener> listener_;
+
+  typedef std::deque<std::string> message_queue_t;
+  message_queue_t messages_;
+
+  Logger& log_;
 
 private:
   // Access control

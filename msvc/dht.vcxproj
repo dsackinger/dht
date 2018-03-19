@@ -147,19 +147,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\CallClient.cpp" />
+    <ClCompile Include="..\CallManager.cpp" />
+    <ClCompile Include="..\Client.cpp" />
+    <ClCompile Include="..\HashTable.cpp" />
     <ClCompile Include="..\Logger.cpp" />
     <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\protobuf\dht.pb.cc" />
+    <ClCompile Include="..\Server.cpp" />
     <ClCompile Include="..\TcpConnection.cpp" />
     <ClCompile Include="..\TcpListener.cpp" />
     <ClCompile Include="..\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\dht.proto">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">protoc.exe --proto_path=.. --cpp_out=..\protobuf %(Identity)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">protobuf\%(Filename).pb.h;protobuf\%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">protoc.exe --proto_path=.. --cpp_out=..\protobuf %(Identity)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">protobuf\%(Filename).pb.h;protobuf\%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">protoc.exe --proto_path=.. --cpp_out=..\protobuf %(Identity)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">protobuf\%(Filename).pb.h;protobuf\%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">protoc.exe --proto_path=.. --cpp_out=..\protobuf %(Identity)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">protobuf\%(Filename).pb.h;protobuf\%(Filename).pb.cc;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </AdditionalInputs>
+    </CustomBuild>
     <None Include="..\LICENSE" />
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CallClient.h" />
+    <ClInclude Include="..\CallManager.h" />
+    <ClInclude Include="..\Client.h" />
+    <ClInclude Include="..\HashTable.h" />
     <ClInclude Include="..\IConnectionListener.h" />
+    <ClInclude Include="..\IMessageListener.h" />
     <ClInclude Include="..\Logger.h" />
+    <ClInclude Include="..\protobuf\dht.pb.h" />
+    <ClInclude Include="..\Server.h" />
     <ClInclude Include="..\TcpConnection.h" />
     <ClInclude Include="..\TcpListener.h" />
     <ClInclude Include="..\ThreadPool.h" />

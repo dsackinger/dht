@@ -1,0 +1,79 @@
+syntax = "proto2";
+
+package dht;
+
+message NodeIdMsg
+{
+  required uint64 id = 1;
+}
+
+message AckMsg
+{
+  required uint32 callid = 1;
+  required bool success = 2;
+
+  optional bool bool_value = 5;
+  optional string string_value = 6;
+}
+
+message SetMsg
+{
+  required string key = 1;
+  required string value = 2;
+}
+
+message HasMsg
+{
+  required string key = 1;
+}
+
+message GetMsg
+{
+  required string key = 1;
+}
+
+message DiagMsg
+{
+}
+
+message JoinMsg
+{
+}
+
+message NodeConfig
+{
+  required uint64 id = 1;
+  required string address = 2;
+
+  required bool consent = 3 [default = false];
+  required bool reject = 4 [ default = false];
+  required bool complete = 5 [default = false];
+}
+
+message ConfigMsg
+{
+  repeated NodeConfig node_config = 1;
+}
+
+message Msg
+{
+  required uint32 id = 1;
+
+  // If a node sends the message, it will have an id
+  // to respond to
+  optional uint64 node_id = 2;
+
+  optional AckMsg ack_msg = 10;
+  optional SetMsg set_msg = 11;
+  optional HasMsg has_msg = 12;
+  optional GetMsg get_msg = 13;
+
+  optional DiagMsg diag_msg = 20;
+
+  // Server messages
+  optional NodeIdMsg node_id_msg = 100;
+  optional JoinMsg join_msg = 101;
+  optional ConfigMsg config_msg = 102;
+}
+
+

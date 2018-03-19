@@ -20,12 +20,24 @@
 class TcpListener : public std::enable_shared_from_this<TcpListener>
 {
 public:
+  // Listen on a specific address
   TcpListener(
     asio::io_service& io_service,
     const std::string& address, const std::string& port,
     std::shared_ptr<IConnectionListener> listener,
     Logger& log);
+
+  // Listen on a specific endpoint - Requires tcp
+  TcpListener(
+    asio::io_service& io_service,
+    asio::ip::tcp::endpoint endpoint,
+    std::shared_ptr<IConnectionListener> listener,
+    Logger& log);
+
   virtual ~TcpListener();
+
+public:
+  void start();
 
 private:
   void start_accept();
