@@ -41,11 +41,11 @@ public:
 
 public:
   inline void set_listener(std::shared_ptr<IMessageListener> listener) { listener_ = listener; };
+
+  std::string get_connection_name();
+
   void start();
   void close();
-
-  // Normally, I would pick a way to hide asio
-  asio::ip::basic_endpoint<asio::ip::tcp> get_remote_endpoint() { return socket_.remote_endpoint(); };
 
   void write(const std::string& message);
 

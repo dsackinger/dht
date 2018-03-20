@@ -47,17 +47,33 @@ TcpConnection::~TcpConnection()
 {
 }
 
+// This utility function returns the remote endpoint name as text
+std::string TcpConnection::get_connection_name()
+{
+  std::stringstream ss;
+  ss << socket_.remote_endpoint();
+  return ss.str();
+}
+
+// To start the reading on the connection
 void TcpConnection::start()
 {
   start_read();
 }
 
+// Terminates the connection
 void TcpConnection::close()
 {
   if (!socket_.is_open())
     return;
 
   log_.log("Connection [", socket_.remote_endpoint(), "] closing.");
+
+  // Give our listener a chance to do bookkeeping
+  auto listener = listener_.lock();
+  if (listener)
+    listener->connection_closing(shared_from_this());
+
   socket_.close();
 }
 

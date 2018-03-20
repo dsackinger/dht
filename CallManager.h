@@ -13,6 +13,8 @@
 #if !defined(__CALL_MANAGER_H__)
 #define __CALL_MANAGER_H__
 
+#include "ThreadPool.h"
+
 #include "protobuf/dht.pb.h"
 
 #include <asio.hpp>
@@ -28,7 +30,7 @@ class CallManager
   : std::enable_shared_from_this<CallManager>
 {
 public:
-  CallManager(asio::io_service& io_service);
+  CallManager(std::shared_ptr<ThreadPool> pool);
   virtual ~CallManager();
 
   typedef enum { invalid, pending, completed, timeout } call_state_e;
@@ -61,10 +63,8 @@ private:
   typedef std::unordered_map<std::uint32_t, call_entry_t> call_map_t;
   call_map_t calls_;
 
-  // Needed for running our cleanup periodically
-  asio::io_service& io_service_;
-
   // Background thread
+  std::shared_ptr<ThreadPool> pool_;
   typedef asio::basic_waitable_timer<std::chrono::system_clock> timer_t;
   std::shared_ptr<timer_t> prune_task_timer_;
 };

@@ -14,8 +14,8 @@
 static constexpr auto expire_age_sc(std::chrono::minutes(1));
 static constexpr auto reap_age_sc(std::chrono::minutes(5));
 
-CallManager::CallManager(asio::io_service& io_service)
-  : io_service_(io_service)
+CallManager::CallManager(std::shared_ptr<ThreadPool> pool)
+  : pool_(pool)
   , next_call_(0)
 {
 }
@@ -85,7 +85,7 @@ CallManager::callback_t CallManager::get_callback(std::uint32_t id)
 void CallManager::start_background_call_prune_task()
 {
 
-  prune_task_timer_ = std::make_shared<timer_t>(io_service_, std::chrono::seconds(5));
+  prune_task_timer_ = std::make_shared<timer_t>(pool_->get_io_service(), std::chrono::seconds(5));
 
   auto weak_self(weak_from_this());
   prune_task_timer_->async_wait(

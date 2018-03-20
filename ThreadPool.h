@@ -23,13 +23,18 @@
 class ThreadPool
 {
 public:
-  ThreadPool(std::size_t threads, Logger& log);
+  ThreadPool(std::size_t thread_count, Logger& log);
   virtual ~ThreadPool();
+
+public:
+  void start();
+  void shutdown();
 
 public:
   inline asio::io_service& get_io_service() { return io_service_; };
 
 private:
+  std::size_t thread_count_;
   asio::io_service io_service_;
   asio::io_service::work not_real_work_;
   std::vector<std::thread> threads_;

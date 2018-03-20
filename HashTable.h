@@ -29,15 +29,25 @@ public:
   ~HashTable();
 
 public:
-  uint64_t node_from_key(const std::string& key);
+  std::uint64_t node_from_key(const std::string& key);
+  std::uint64_t next_node_id(std::uint64_t id);
+  bool has_node(uint64_t id);
+  std::size_t node_count();
+  node_vector_t nodes();
+
+  std::size_t get_key_count();
+  std::string get_first_key();
 
   void set(const std::string& key, const std::string& value);
   bool has(const std::string& key);
   bool get(const std::string& key, std::string& value_out);
-  void del(const std::string& key);
+  void erase(const std::string& key);
 
 public:
   std::vector<std::string> keys();
+
+private:
+  std::uint64_t hash_string(const std::string& value);
 
 private:
   int id_;

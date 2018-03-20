@@ -58,7 +58,7 @@ private:
   void on_msg_ack(std::shared_ptr<TcpConnection> connection, const dht::Msg& msg);
 
 private:
-  ThreadPool pool_;
+  std::shared_ptr<ThreadPool> pool_;
   std::shared_ptr<TcpConnection> connection_;
 
   // For matching up incoming acks to outbound calls

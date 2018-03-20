@@ -15,9 +15,9 @@ Client::Client(
   const std::string& port,
   Logger& log)
   : log_(log)
-  , pool_(1, log)
-  , calls_(std::make_shared<CallManager>(pool_.get_io_service()))
-  , connection_(std::make_shared<TcpConnection>(pool_.get_io_service(), address, port, log))
+  , pool_(std::make_shared<ThreadPool>(1, log))
+  , calls_(std::make_shared<CallManager>(pool_))
+  , connection_(std::make_shared<TcpConnection>(pool_->get_io_service(), address, port, log))
 {
 }
 
@@ -27,6 +27,7 @@ Client::~Client()
 
 void Client::start()
 {
+  pool_->start();
   connection_->set_listener(shared_from_this());
   connection_->start();
 }

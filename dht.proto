@@ -2,11 +2,6 @@ syntax = "proto2";
 
 package dht;
 
-message NodeIdMsg
-{
-  required uint64 id = 1;
-}
-
 message AckMsg
 {
   required uint32 callid = 1;
@@ -14,8 +9,10 @@ message AckMsg
 
   optional bool bool_value = 5;
   optional string string_value = 6;
+  optional uint64 uint64_value = 7;
 }
 
+// Now for client messages
 message SetMsg
 {
   required string key = 1;
@@ -36,8 +33,29 @@ message DiagMsg
 {
 }
 
+// Node to node messages
 message JoinMsg
 {
+  required uint64 id = 1;
+  required string address = 2;
+}
+
+message NodeInfo
+{
+  required uint64 id = 1;
+  required string address = 2;
+}
+
+message JoinAcceptMsg
+{
+  required uint64 acceptor_id = 1;
+  repeated NodeInfo nodes = 2;
+}
+
+message JoinNotifyMsg
+{
+  required uint64 acceptor_id = 1;
+  repeated NodeInfo nodes = 2;
 }
 
 message NodeConfig
@@ -55,25 +73,42 @@ message ConfigMsg
   repeated NodeConfig node_config = 1;
 }
 
+// Ring origination information
+message RingOrigination
+{
+  required uint64 id = 1;
+  required string client_name = 2;
+  required uint32 callid = 3;
+}
+
+// Catchall message for parsing all messages
 message Msg
 {
   required uint32 id = 1;
 
-  // If a node sends the message, it will have an id
-  // to respond to
+  // If a node sends the message, it will have an id to respond to
   optional uint64 node_id = 2;
 
+  // If we are sending a ring message, this is the originating node
+  optional RingOrigination origin = 3;
+
+  // Client Messages
   optional AckMsg ack_msg = 10;
   optional SetMsg set_msg = 11;
   optional HasMsg has_msg = 12;
   optional GetMsg get_msg = 13;
 
+  // Diagnostic Messages
   optional DiagMsg diag_msg = 20;
 
   // Server messages
-  optional NodeIdMsg node_id_msg = 100;
-  optional JoinMsg join_msg = 101;
-  optional ConfigMsg config_msg = 102;
+  optional JoinMsg join_msg = 100;
+  optional JoinAcceptMsg join_accept_msg = 101;
+  optional JoinNotifyMsg join_notify_msg = 102;
+  optional NodeInfo join_node_id_msg = 103;
+
+  // Join party
+  optional ConfigMsg config_msg = 110;
 }
 
 

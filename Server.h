@@ -12,6 +12,7 @@
 #if !defined(__SERVER_H__)
 #define __SERVER_H__
 
+#include "CallClient.h"
 #include "CallManager.h"
 #include "HashTable.h"
 #include "Logger.h"
@@ -34,9 +35,12 @@ public:
 
 public:
   void start(std::string& address, std::string& port);
+  bool is_exiting() { return exiting_; };
+  void stop();
+  void join(std::string& address, std::string& port);
 
 public:
-  inline asio::io_service& get_io_service() { return pool_.get_io_service(); };
+  inline asio::io_service& get_io_service() { return pool_->get_io_service(); };
 
 public:
   // IConnectionListener interface
@@ -65,13 +69,33 @@ private:
 
   void on_msg_diag(std::shared_ptr<TcpConnection> connection, const dht::Msg& msg);
 
-private:
-  // Utility functions
-  std::shared_ptr<TcpConnection> get_node_connection(std::uint64_t nodeid);
-  void dump_cache();
-  void dump_cache_table(const std::string& message, std::shared_ptr<HashTable> table);
+  void on_msg_join(std::shared_ptr<TcpConnection> connection, const dht::Msg& msg);
+  void on_msg_join_accept(std::shared_ptr<TcpConnection> connection, const dht::Msg& msg);
+
+  void on_msg_join_node_id(std::shared_ptr<TcpConnection> connection, const dht::Msg& msg);
+  void on_msg_join_notify(std::shared_ptr<TcpConnection> connection, const dht::Msg& msg);
 
 private:
+  void diag_notify_nodes(std::uint64_t target);
+  void join_accept_node(std::shared_ptr<TcpConnection> connection, std::uint64_t joinid);
+  void join_notify_nodes(std::shared_ptr<TcpConnection> connection, std::uint32_t caller_callid, std::uint64_t current, std::uint64_t joinid);
+  void join_promote_connection_to_node(std::shared_ptr<TcpConnection> connection, std::uint64_t joinid, std::string address);
+  void join_distribute_old_table();
+
+private:
+  // Utility functions
+  uint64_t get_next_node_id(uint64_t id = 0);
+  std::shared_ptr<TcpConnection> get_node_connection(std::uint64_t nodeid);
+  std::shared_ptr<TcpConnection> get_client_connection(std::string name);
+  void dump_cache();
+  void dump_cache_table(const std::string& message, std::shared_ptr<HashTable> table);
+  std::vector<CallClient::node_info_t> get_node_info_list();
+
+private:
+  std::shared_ptr<ThreadPool> pool_;
+  std::atomic<bool> exiting_;
+  std::atomic<bool> in_join_;
+
   // This is our ID that we use on the ring
   std::uint64_t id_;
 
@@ -101,10 +125,9 @@ private:
   std::mutex node_lock_;
   typedef std::map<uint64_t, std::shared_ptr<TcpConnection>> node_connection_map_t;
   node_connection_map_t nodes_;
+  typedef std::map<uint64_t, std::string> node_address_map_t;
+  node_address_map_t node_addresses_;
 
-private:
-  ThreadPool pool_;
-  
   std::shared_ptr<TcpListener> listener_;
 
   Logger& log_;

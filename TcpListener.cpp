@@ -53,6 +53,13 @@ TcpListener::~TcpListener()
   acceptor_.close();
 }
 
+std::string TcpListener::get_name()
+{
+  std::stringstream ss;
+  ss << acceptor_.local_endpoint();
+  return ss.str();
+}
+
 void TcpListener::start()
 {
   // Must be called outside of the constructor so the shared this is established.

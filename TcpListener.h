@@ -37,6 +37,7 @@ public:
   virtual ~TcpListener();
 
 public:
+  std::string get_name();
   void start();
 
 private:

@@ -19,14 +19,6 @@
 class Logger
 {
 public:
-  struct entry
-  {
-    const std::chrono::system_clock::time_point time;
-    const std::string line;
-    entry * next;
-  };
-
-public:
   Logger() = default;
   virtual ~Logger() = default;
 
