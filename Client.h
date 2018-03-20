@@ -15,14 +15,17 @@
 #if !defined(__CLIENT_H__)
 #define __CLIENT_H__
 
-#include "CallManager.h"
 #include "Logger.h"
 #include "TcpConnection.h"
 #include "ThreadPool.h"
 
+#include "protobuf/dht.pb.h"
+
 #include <asio.hpp>
 
 #include <string>
+
+class CallManager;
 
 class Client
   : public IMessageListener

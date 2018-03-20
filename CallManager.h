@@ -23,11 +23,12 @@
 #include <chrono>
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <mutex>
 #include <unordered_map>
 
 class CallManager
-  : std::enable_shared_from_this<CallManager>
+  : public std::enable_shared_from_this<CallManager>
 {
 public:
   CallManager(std::shared_ptr<ThreadPool> pool);
@@ -70,3 +71,4 @@ private:
 };
 
 #endif // #if !defined(__CALL_MANAGER_H__)
+

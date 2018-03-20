@@ -94,7 +94,7 @@ void TcpConnection::start_read()
 {
   // Need a self pointer to lock us in memory so that
   // the buffer doesn't go away
-  auto weak_self(weak_from_this());
+  std::weak_ptr<TcpConnection> weak_self(shared_from_this());
   asio::async_read(socket_, asio::buffer(reinterpret_cast<char *>(&read_length_), sizeof(read_length_)),
     [this, weak_self](std::error_code ec, std::size_t length)
   {
@@ -157,7 +157,7 @@ void TcpConnection::start_write()
   if (messages_.empty())
     return;
 
-  auto weak_self(weak_from_this());
+  std::weak_ptr<TcpConnection> weak_self(shared_from_this());
   write_length_ = static_cast<uint32_t>(messages_.front().capacity());
   write_length_ = asio::detail::socket_ops::host_to_network_short(write_length_);
   asio::async_write(socket_, asio::buffer(reinterpret_cast<char*>(&write_length_), sizeof(write_length_)),

@@ -87,7 +87,7 @@ void CallManager::start_background_call_prune_task()
 
   prune_task_timer_ = std::make_shared<timer_t>(pool_->get_io_service(), std::chrono::seconds(5));
 
-  auto weak_self(weak_from_this());
+  std::weak_ptr<CallManager> weak_self(shared_from_this());
   prune_task_timer_->async_wait(
     [this, weak_self](const asio::error_code& ec)
   {

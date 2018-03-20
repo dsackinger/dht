@@ -9,6 +9,7 @@
 
 #include "Client.h"
 #include "CallClient.h"
+#include "CallManager.h"
 
 Client::Client(
   const std::string& address,

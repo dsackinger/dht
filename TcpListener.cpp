@@ -68,7 +68,7 @@ void TcpListener::start()
 
 void TcpListener::start_accept()
 {
-  auto weak_self(weak_from_this());
+  std::weak_ptr<TcpListener> weak_self(shared_from_this());
   acceptor_.async_accept(socket_,
     [this, weak_self](std::error_code ec)
   {
