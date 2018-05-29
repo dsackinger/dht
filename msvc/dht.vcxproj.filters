@@ -16,6 +16,24 @@
     <Filter Include="Source Files\protobuf">
       <UniqueIdentifier>{21624d52-bb2b-44eb-967c-424d4a8119cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\protobuf\x64">
+      <UniqueIdentifier>{8a9646bb-85ef-44ac-825a-af1b306995cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protobuf\x86">
+      <UniqueIdentifier>{6861574f-0af7-4bcb-8fab-c95dcbd1b3df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protobuf\x64\Debug">
+      <UniqueIdentifier>{c3fd8f39-da50-4697-95a8-da7e55003e27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protobuf\x64\Release">
+      <UniqueIdentifier>{6b0c7824-fc23-40f3-bc70-21013a3d9185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protobuf\x86\Debug">
+      <UniqueIdentifier>{85924453-1547-4ca4-8e94-3e63871bde81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protobuf\x86\Release">
+      <UniqueIdentifier>{2dea0e14-fb60-4599-ba30-5f2d3b87dc06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -33,9 +51,6 @@
     <ClCompile Include="..\ThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\protobuf\dht.pb.cc">
-      <Filter>Source Files\protobuf</Filter>
-    </ClCompile>
     <ClCompile Include="..\Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,13 +66,22 @@
     <ClCompile Include="..\CallClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="x64\Debug\protobuf\dht.pb.cc">
+      <Filter>Source Files\protobuf\x64\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="x64\Release\protobuf\dht.pb.cc">
+      <Filter>Source Files\protobuf\x64\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\protobuf\dht.pb.cc">
+      <Filter>Source Files\protobuf\x86\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\protobuf\dht.pb.cc">
+      <Filter>Source Files\protobuf\x86\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />
     <None Include="..\README.md" />
-    <None Include="..\dhc.proto">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\IConnectionListener.h">
@@ -74,9 +98,6 @@
     </ClInclude>
     <ClInclude Include="..\ThreadPool.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\protobuf\dht.pb.h">
-      <Filter>Source Files\protobuf</Filter>
     </ClInclude>
     <ClInclude Include="..\IMessageListener.h">
       <Filter>Header Files</Filter>
@@ -96,5 +117,22 @@
     <ClInclude Include="..\CallClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="x64\Debug\protobuf\dht.pb.h">
+      <Filter>Source Files\protobuf\x64\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Release\protobuf\dht.pb.h">
+      <Filter>Source Files\protobuf\x64\Release</Filter>
+    </ClInclude>
+    <ClInclude Include="Release\protobuf\dht.pb.h">
+      <Filter>Source Files\protobuf\x86\Release</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug\protobuf\dht.pb.h">
+      <Filter>Source Files\protobuf\x86\Debug</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="..\dht.proto">
+      <Filter>Source Files\protobuf</Filter>
+    </Protobuf>
   </ItemGroup>
 </Project>

@@ -31,7 +31,7 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::start()
 {
-  for (auto i = 0; i < thread_count_; i++)
+  for (size_t i = 0; i < thread_count_; i++)
     threads_.emplace_back([this, i]()
   {
     std::string thread_name = std::string("Thread-") + std::to_string(i + 1);

@@ -32,7 +32,7 @@ std::uint64_t HashTable::node_from_key(const std::string& key)
     return 0;
 
   auto hash = hash_string(key);
-  auto slot = hash % nodes_.size();
+  std::size_t slot = hash % nodes_.size();
   return nodes_.at(slot);
 }
 
